@@ -1,6 +1,6 @@
 # js-bundle-search workflow
 
-Declarative workflow for searching remote JavaScript bundles with cached fetch and multi-pattern analysis.
+Declarative workflow for remote JavaScript bundle analysis. It optionally extracts local auth context, runs multi-pattern bundle search, and emits a compact summary step for downstream tooling.
 
 ## Entry File
 
@@ -12,12 +12,12 @@ Declarative workflow for searching remote JavaScript bundles with cached fetch a
 
 ## Structure
 
-This workflow demonstrates a small end-to-end bundle analysis flow:
+This workflow wraps the built-in `js_bundle_search` tool in a small but reusable declarative graph:
 
-- Optional auth context extraction via `page_script_run(auth_extract)`
-- Core bundle inspection via `js_bundle_search`
-- Summary emission via `console_execute`
-- `SequenceNode` orchestration with a `BranchNode` guard for optional pre-step
+- Optional `page_script_run(auth_extract)` pre-step for context collection
+- Core `js_bundle_search` step with configurable regex patterns
+- `console_execute` summary step to expose search intent and expected follow-up
+- `BranchNode` guard so the auth-extract step can be toggled safely
 
 ## Tools Used
 
@@ -34,15 +34,13 @@ This workflow demonstrates a small end-to-end bundle analysis flow:
 - `workflows.jsBundleSearch.patterns`
 - `workflows.jsBundleSearch.enableAuthExtract`
 
-Default example patterns cover payment endpoints, subscription tier signals, and feature flags.
+Default example patterns cover payment endpoints, subscription-tier signals, and feature-flag markers.
 
 ## Local Validation
 
-1. Install deps with `pnpm install`.
+1. Run `pnpm install`.
 2. Run `pnpm typecheck`.
-3. Load the workflow repo through `jshookmcp` extension roots.
-4. Run `extensions_reload` and confirm it appears in `extensions_list`.
-5. Execute the workflow in your workflow runner and verify:
-   - optional auth extraction runs when enabled
-   - bundle search returns matches for configured patterns
-   - summary step completes
+3. Put this repo under a configured `workflows/` extension root.
+4. Run `extensions_reload` in `jshookmcp`.
+5. Confirm the workflow appears in `extensions_list`.
+6. Execute the workflow and verify optional auth extraction, bundle match results, and summary output.
