@@ -1,0 +1,4 @@
+name: js-bundle-search
+description: Declarative workflow for searching remote JavaScript bundles with cached fetch and multi-pattern analysis.
+author: vmoranv
+source_repo: https://github.com/vmoranv/jshook_workflow_js_bundle_search
