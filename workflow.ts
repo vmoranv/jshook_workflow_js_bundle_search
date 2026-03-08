@@ -119,7 +119,8 @@ const jsBundleSearchWorkflow: WorkflowContract = {
   defaultMaxConcurrency: 1,
 
   build(ctx) {
-    const appUrl = ctx.getConfig<string>('workflows.jsBundleSearch.appUrl', 'https://example.com/');
+    const appUrl = ctx.getConfig<string>('workflows.jsBundleSearch.appUrl', '');
+    if (!appUrl) throw new Error('[workflow.js-bundle-search] Missing required config: workflows.jsBundleSearch.appUrl');
     const bundleUrl = ctx.getConfig<string>('workflows.jsBundleSearch.bundleUrl', '');
     const patterns = ctx.getConfig<SearchPattern[]>(
       'workflows.jsBundleSearch.patterns',
